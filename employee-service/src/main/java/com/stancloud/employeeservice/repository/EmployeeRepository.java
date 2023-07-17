@@ -8,7 +8,7 @@ import java.util.List;
 @Repository
 public class EmployeeRepository {
   private List<Employee> employees = List.of(
-    new Employee(1L, 1L, 27,"Stan", "CEO")
+    new Employee(1L, 1L, 27,"Stan", "Designer")
   );
 
   public Employee findById(Long id) {

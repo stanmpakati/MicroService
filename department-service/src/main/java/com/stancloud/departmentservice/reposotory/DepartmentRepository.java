@@ -8,9 +8,9 @@ import java.util.List;
 @Repository
 public class DepartmentRepository {
   private List<Department> departments = List.of(
-    new Department(1L, "Stancloud"),
-    new Department(2L, "Stancloud2"),
-    new Department(3L, "Stancloud3")
+    new Department(1L, "IT"),
+    new Department(2L, "MARKETING"),
+    new Department(3L, "FINANCE")
   );
 
   public Department findById(Long id) {
