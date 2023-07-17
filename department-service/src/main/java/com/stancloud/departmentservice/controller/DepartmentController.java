@@ -1,5 +1,6 @@
 package com.stancloud.departmentservice.controller;
 
+import com.stancloud.departmentservice.client.EmployeeClient;
 import com.stancloud.departmentservice.model.Department;
 import com.stancloud.departmentservice.reposotory.DepartmentRepository;
 import org.slf4j.Logger;
@@ -13,6 +14,9 @@ public class DepartmentController {
   private static final Logger LOGGER = LoggerFactory.getLogger(DepartmentController.class);
   @Autowired
   private DepartmentRepository departmentRepository;
+
+  @Autowired
+  private EmployeeClient employeeClient;
 
   @PostMapping()
   public Department save(@RequestBody Department department) {
