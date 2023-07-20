@@ -1,9 +1,10 @@
+
 spring:
   application:
-    name: identity-service
+    name: authentication-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/ms-identity-db?createDatabaseIfNotExist=true
+    url: jdbc:postgresql://localhost:5432/ms-auth-db?createDatabaseIfNotExist=true
     username: postgres
     password: Polik.76
     driver-class-name: org.postgresql.Driver
@@ -15,9 +16,13 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: public
         format_sql: true
         jdbc:
           time_zone: UTC
+
+  zipkin:
+    enabled: false
 
   config:
     import: "optional:configserver:http://localhost:8888"
@@ -25,7 +30,5 @@ spring:
 application:
   security:
     jwt:
-#      secret: fea987ac15a4e107cda234ec924e957096f448da40864aa7d8aaa50dc1c336f27684f5a72cbacf7c91397340bc269c6e0ccd45cda7c30b00a7b843d447324003
-      secret: gHrUHrU1FZGytdX/sqRTmTOc/8VfZa573Ri/0UvucDM=
-#      expiration: 86400000
-      expiration: 8640000000000
+      secret: fea987ac15a4e107cda234ec924e957096f448da40864aa7d8aaa50dc1c336f27684f5a72cbacf7c91397340bc269c6e0ccd45cda7c30b00a7b843d447324003
+      expiration: 864000000

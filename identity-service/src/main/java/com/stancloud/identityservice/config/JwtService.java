@@ -1,25 +1,30 @@
 package com.stancloud.identityservice.config;
 
+import com.stancloud.identityservice.entity.UserCredential;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 @Component
+@Slf4j
 public class JwtService {
-  @Value("${application.security.jwt.secret-key}")
-  private static String secretKey;
+//  todo: move to application.properties
+//  @Value("${application.security.jwt.secret}")
+  private String secretKey = "gHrUHrU1FZGytdX/sqRTmTOc/8VfZa573Ri/0UvucDM=";
 
-  @Value("${application.security.jwt.expiration}")
-  private static Long jwtExpiration;
+//  @Value("${application.security.jwt.expiration}")
+  private Long jwtExpiration = 8640000000000L; // 24 hours
+
 
   public Claims validateToken(String token) {
     return Jwts.parserBuilder()
@@ -35,16 +40,23 @@ public class JwtService {
       .before(new Date(System.currentTimeMillis()));
   }
 
-  public boolean isTokenValid(String token) {
-    return !isTokenExpired(token);
+  public boolean isTokenValid(String token, UserDetails userDetails) {
+    String email = extractUsername(token);
+    return (email == userDetails.getUsername()) && !isTokenExpired(token);
   }
 
   public String extractUsername(String token) {
-    return extractAllClaims(token).getSubject();
+    return extractClaim(token, Claims::getSubject);
   }
 
-  public String generateToken(String subject) {
-    return createToken(subject, new HashMap<>());
+  public String generateToken(UserCredential user) {
+    Claims claims = Jwts.claims().setSubject(user.getId().toString());
+
+    List<String> auth = new LinkedList<>();
+    user.getUserRoles().forEach(role -> auth.add(role.toString()));
+    claims.put("auth", auth);
+
+    return createToken(user.getEmail(), claims);
   }
 
   private String createToken(String subject, Map<String, Object> claims) {

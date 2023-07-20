@@ -22,11 +22,6 @@ public class AuthController {
     return authService.login(userDto);
   }
 
-  @GetMapping("/token/{email}")
-  public String generateToken(@RequestParam String email) {
-    return authService.generateToken(email);
-  }
-
   @GetMapping("/validate/{token}")
   public String validateToken(@RequestParam String token) {
     authService.validateToken(token);

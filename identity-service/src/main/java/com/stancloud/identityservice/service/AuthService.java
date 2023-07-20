@@ -39,22 +39,27 @@ public class AuthService {
       .build();
   }
 
-  public String generateToken(String email) {
-    return jwtService.generateToken(email);
-  }
-
   public void validateToken(String token) {
     jwtService.validateToken(token);
   }
 
   public String login(UserDto userDto) {
-    authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword())
-    );
-
     UserCredential user = userRepo.findByEmail(userDto.getEmail())
-        .orElseThrow(() -> new RuntimeException("User not found"));
+      .orElseThrow(() -> new RuntimeException("User not found"));
 
-    return jwtService.generateToken(user.getEmail());
+    if (passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
+      String token = jwtService.generateToken(user);
+      return token;
+    } else {
+      throw new RuntimeException("Username Password incorrect");
+    }
+//    authenticationManager.authenticate(
+//        new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword())
+//    );
+//
+//    UserCredential user = userRepo.findByEmail(userDto.getEmail())
+//        .orElseThrow(() -> new RuntimeException("User not found"));
+//
+//    return jwtService.generateToken(user.getEmail());
   }
 }
