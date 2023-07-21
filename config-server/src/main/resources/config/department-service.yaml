@@ -5,8 +5,6 @@ eureka:
   instance:
     hostname: localhost
   client:
-    fetch-registry: false
-    registerWithEureka: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
@@ -14,3 +12,10 @@ management:
   tracing:
     sampling:
       probability: 1.0
+
+cloud:
+  discovery:
+    enabled: true
+    locator:
+      enabled: true
+      lower-case-service-id: true
