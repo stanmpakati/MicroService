@@ -33,6 +33,15 @@ class authController(
     return ResponseHandler.generateOkResponse(response.token)
   }
 
+  // Verify token
+  @PostMapping("/verify")
+  fun verify(
+    @RequestBody token: String,
+  ): String {
+    authService.verify(token)
+    return "Token is valid"
+  }
+
 //  @PostMapping("/refresh")
 //  fun refresh(
 //    @RequestBody request: RefreshRequest,

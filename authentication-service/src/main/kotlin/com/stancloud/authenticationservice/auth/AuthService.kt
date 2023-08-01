@@ -46,4 +46,8 @@ class AuthService(
 
     return LoginResponse(jwtTokenProvider.generateToken(user))
   }
+
+  fun verify(token: String): Boolean {
+    return jwtTokenProvider.validateToken(token)
+  }
 }

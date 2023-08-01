@@ -95,6 +95,10 @@ class JwtService {
       .body
   }
 
+  fun validateToken(token: String): Boolean {
+    return !isTokenExpired(token)
+  }
+
   private val signInKey: Key
     private get() {
       val keyBytes = Decoders.BASE64.decode(secretKey)
